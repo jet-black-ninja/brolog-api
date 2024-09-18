@@ -1,5 +1,6 @@
 import{Request, Response, NextFunction} from "express";
 import {body , validationResult} from 'express-validator';
+
 import Tag from '../models/tag'
 
 const showAllTags= async (req:Request, res:Response, next: NextFunction) => {
