@@ -83,7 +83,7 @@ const showLatestArticles = (req:Request, res:Response , next:NextFunction) =>{
     );
 };
 
-const showCertainArticles = (req:Request , res:Response , next:NextFunction) => {
+const showCertainArticle = (req:Request , res:Response , next:NextFunction) => {
     const id = req.params.id;
     const options = {
         sort:{timeStamp: -1},
@@ -322,7 +322,7 @@ export {
     showAllArticles,
     showAllArticlesAdmin,
     showLatestArticles,
-    showCertainArticles,
+    showCertainArticle,
     getRandomArticleId,
     showUnpublishedArticles,
     createArticle,

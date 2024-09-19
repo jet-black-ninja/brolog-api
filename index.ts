@@ -33,7 +33,8 @@ const corsOptions ={
     }
 }
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+app.use(cors());//TODO revert this 
 app.use(passport.initialize());
 app.use(bodyParser.json());
 app.use(logger('dev'));

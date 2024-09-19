@@ -2,10 +2,9 @@ import {Request, Response, NextFunction} from 'express';
 import {body , validationResult} from 'express-validator';
 import Comment from '../models/comment';
 import Article from '../models/article'; 
-import {Filter} from 'bad-words'; 
 
-const filter = new Filter();
-filter.addWords(...require('badwords/array'));
+
+
 
 async function saveComment(parentArticleId: string, commentData:any ) {
     const post = await Article.findById(parentArticleId);
@@ -15,8 +14,8 @@ async function saveComment(parentArticleId: string, commentData:any ) {
 
     const comment = new Comment({
         parentArticle: parentArticleId,
-        author: filter.clean(commentData.author),
-        text: filter.clean(commentData.text),
+        author: commentData.author,
+        text: commentData.text,
         timestamp: Date.now(),
     })
 
