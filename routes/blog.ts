@@ -15,12 +15,16 @@ blogRoute.get(
     article_controller.showAllArticlesAdmin,
 );
 
-blogRoute.post(
+blogRoute.get(
     '/api/admin/articles/published',
     passport.authenticate('jwt', {session: false}),
     article_controller.showAllArticles
 );
-
+blogRoute.get(
+    '/api/admin/articles/unpublished',
+    passport.authenticate('jwt', { session: false }),
+    article_controller.showUnpublishedArticles
+  );
 blogRoute.get('/api/articles/:id',article_controller.showCertainArticle);
 
 blogRoute.get('/api/articles/random', article_controller.getRandomArticleId);
@@ -41,9 +45,10 @@ blogRoute.put(
     article_controller.updateArticle
 );
 blogRoute.post('/api/articles/:id/comment',  comment_controller.createComment);
-blogRoute.post(
+blogRoute.delete(
     '/api/admin/articles/:id/comment',
     passport.authenticate('jwt', {session: false}),
     comment_controller.deleteComment
 );
+
 

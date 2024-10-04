@@ -1,8 +1,8 @@
 import express from 'express';
 import { authRoute } from './auth';
-import {signupRoute} from "./signup"
-import {blogRoute} from "./blog"
-import {tagRoute} from "./tag";
+import { signupRoute } from './signup';
+import { blogRoute } from './blog';
+import { tagRoute } from './tag';
 import { getApiKeysRoute } from './getApiKeys';
 
 export const routes = express.Router();

@@ -8,7 +8,8 @@ const validateSignup = [
     .trim()
     .isLength({min:1})
     .escape()
-    .custom(async (username: string) =>{
+    .custom(
+        async (username: string) =>{
         try{
         if(!/^[a-zA-Z0-9-]+$/.test(username)){
             throw new Error(
@@ -25,18 +26,27 @@ const validateSignup = [
     }catch(err){
         throw new Error('Something went wrong when validating username');
     }
-}),
+    }),
     body('password',
         'Password length must be more than 8 and must contain at least one uppercase, one lowercase, one digit and a symbol'
     ).trim()
      .isStrongPassword()
      .escape(),
-     body('confirm password', 'Password do not match').custom(
-        (value:String, {req}) => value===req.body.password
+     body('confirmPassword', 'Passwords do not match').custom(
+        (value: string, { req }) => {
+            console.log('Confirm Password:', value);
+            console.log('req.body.password:', req.body.password);
+            return value === req.body.password;
+
+        }
     ),
 ];
 
-const handleValidationErrors = ( req:Request, res:Response, next: NextFunction)=> {
+const handleValidationErrors = ( 
+    req:Request, 
+    res:Response, 
+    next: NextFunction
+    ) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()){
         return res.status(400).json({

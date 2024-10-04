@@ -22,7 +22,7 @@ const showAllArticles = (req:Request, res:Response, next:NextFunction) => {
                 return next();
             }
             if(!listArticles){
-                return res.status(404).json({message:'NO articles found'});
+                res.status(404).json({message:'NO articles found'});
             }
             res.status(200).json({
                 article_list:listArticles,
@@ -47,7 +47,7 @@ const showAllArticlesAdmin = (req:Request, res:Response, next:NextFunction)=>{
                 return next(err);
             }
             if(!listArticles){
-                return res.status(404).json({message:'No articles found'});
+                res.status(404).json({message:'No articles found'});
             }
             res.status(200).json({
                 article_list:listArticles,
@@ -74,9 +74,9 @@ const showLatestArticles = (req:Request, res:Response , next:NextFunction) =>{
                 return next(err);
             }
             if(!listArticles){
-                return res.status(404).json({message:'No articles found'});
+                res.status(404).json({message:'No articles found'});
             }
-            res.status(200).json({
+             res.status(200).json({
                 article_list:listArticles,
             });
         }
@@ -86,24 +86,24 @@ const showLatestArticles = (req:Request, res:Response , next:NextFunction) =>{
 const showCertainArticle = (req:Request , res:Response , next:NextFunction) => {
     const id = req.params.id;
     const options = {
-        sort:{timeStamp: -1},
+        sort: {timeStamp: -1},
         populate:[
             {path:'author', select:'username'},
             {path:'comments'},
             {path:'tags'},
-        ]
+        ],
     };
 
-    Article.findById(id,null , options).exec(
-        (err:CallbackError, article:IArticleModel | null) => {
+    Article.findById(id, null , options).exec(
+        (err: CallbackError, article: IArticleModel | null) => {
             if(err){
-                return next(err);
+                return next();
             }
             if(!article){
-                return res.status(404).json({message:'Article not found'});
-            }
+                res.status(404).json({message: 'Article not found'});
+            } 
             res.status(200).json({
-                article,
+                    article:article,
             });
         }
     );
@@ -111,18 +111,15 @@ const showCertainArticle = (req:Request , res:Response , next:NextFunction) => {
 
 const getRandomArticleId = (req:Request, res:Response, next:NextFunction) => {
     Article.aggregate([
-        {
-            $match:{isPublished:true},
-        },
-        {
-            $sample:{size:1},
-        }
+        {$match:{isPublished:true},},
+        {$sample:{size:1}},
     ]).exec((err:CallbackError, article: IArticleModel[]) => {
         if(err){
             return next(err);
         }
+
         if(!article.length){
-            res.status(404).json({message:'Nop published articles found'});
+            res.status(404).json({message:'No published articles found'});
         }
         res.status(200).json({
             articleId: article[0]._id,
@@ -281,7 +278,7 @@ const updateArticle = [
                     return next(err);
                 }
 
-                foundArticle.title = req.body.tile;
+                foundArticle.title = req.body.title;
                 foundArticle.content = req.body.content;
                 foundArticle.tags = reqArticle.tags ?? [];
                 foundArticle.comments = reqArticle.comments?? [];
